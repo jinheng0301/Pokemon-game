@@ -1,23 +1,23 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pokemon/characters/boy.dart';
 import 'package:pokemon/characters/oak.dart';
 import 'package:pokemon/components/buttons.dart';
-import 'package:pokemon/components/chat_bubble.dart';
+import 'package:pokemon/lists/dialogue_index.dart';
 import 'package:pokemon/lists/no_man_lands_littleroot.dart';
 import 'package:pokemon/maps/littleroot_town.dart';
 import 'package:pokemon/maps/pokelab.dart';
+import 'package:pokemon/screens/pokelab_page.dart';
 
 class LittleRootPage extends StatefulWidget {
-  const LittleRootPage({super.key});
+  static const String id = 'littleroot_page';
 
   @override
   State<LittleRootPage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<LittleRootPage> {
-  // litttleroot
+  // littleroot
   double mapX = 0.9;
   double mapY = 0.2;
 
@@ -35,7 +35,6 @@ class _HomePageState extends State<LittleRootPage> {
 
   // professor Oak
   String oakDirection = 'Front';
-  String professorDialogue = 'Hello, young trainer!';
   double initialOakX = 0;
   double initialOakY = 0;
   double oakX = 0;
@@ -49,6 +48,10 @@ class _HomePageState extends State<LittleRootPage> {
     initialOakY = 0; // Set your desired initial Y coordinate
     oakX = initialOakX;
     oakY = initialOakY;
+  }
+
+  void moveToPokelab() {
+    Navigator.pushNamed(context, PokelabPage.id);
   }
 
   void moveLeft() {
@@ -89,20 +92,23 @@ class _HomePageState extends State<LittleRootPage> {
           mapY += step;
           oakY = initialOakY + mapY;
         });
+        checkProfTalk();
       }
 
       // enter pokelab
       // if you are standing this door(this coordinate), it will change to pokelab
       if (double.parse(mapX.toString()) == 0.4 &&
           double.parse(mapY.toString()) == -0.8) {
-        setState(() {
-          currentLocation = 'pokelab';
-          labMapX = 0;
-          labMapY = -2.7;
-        });
+        // setState(() {
+        //   currentLocation = 'pokelab';
+        //   labMapX = 0;
+        //   labMapY = -2.7;
+        // });
+
+        // Call the moveToPokelab function to navigate to the PokelabPage
+        moveToPokelab();
       }
     }
-    checkProfTalk();
     animateWalk();
   }
 
@@ -114,9 +120,9 @@ class _HomePageState extends State<LittleRootPage> {
           mapY -= step;
           oakY = initialOakY + mapY;
         });
+        checkProfTalk();
       }
     }
-    checkProfTalk();
     animateWalk();
   }
 
@@ -163,25 +169,27 @@ class _HomePageState extends State<LittleRootPage> {
     return true;
   }
 
-  void profTalk() {
-    showDialog(
+  void profTalk() async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text(professorDialogue),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  chatStarted = false;
-                });
-              },
-              child: Text(
-                'ok',
-              ),
-            ),
-          ],
+          content: Center(
+            child: Text(dialogues[currentDialogueIndex]),
+          ),
+          // actions: [
+          //   TextButton(
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //       setState(() {
+          //         chatStarted = false;
+          //       });
+          //     },
+          //     child: Text(
+          //       'ok',
+          //     ),
+          //   ),
+          // ],
         );
       },
     );
@@ -214,9 +222,25 @@ class _HomePageState extends State<LittleRootPage> {
     }
   }
 
-  void pressedA() {}
+  void pressedA() {
+    if (currentDialogueIndex < dialogues.length - 1) {
+      setState(() {
+        currentDialogueIndex++;
+        chatStarted = true;
+      });
+      profTalk();
+    }
+  }
 
-  void pressedB() {}
+  void pressedB() {
+    if (currentDialogueIndex > 0) {
+      setState(() {
+        currentDialogueIndex--;
+        chatStarted = true;
+      });
+      profTalk();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +312,7 @@ class _HomePageState extends State<LittleRootPage> {
                               width: 50,
                             ),
                             MyButton(
-                              text: '<-',
+                              text: '←',
                               function: moveLeft,
                             ),
                             Container(
@@ -300,7 +324,7 @@ class _HomePageState extends State<LittleRootPage> {
                         Column(
                           children: [
                             MyButton(
-                              text: 'up',
+                              text: '↑',
                               function: moveUp,
                             ),
                             Container(
@@ -308,7 +332,7 @@ class _HomePageState extends State<LittleRootPage> {
                               width: 50,
                             ),
                             MyButton(
-                              text: 'down',
+                              text: '↓',
                               function: moveDown,
                             ),
                           ],
@@ -320,7 +344,7 @@ class _HomePageState extends State<LittleRootPage> {
                               width: 50,
                             ),
                             MyButton(
-                              text: '->',
+                              text: '→',
                               function: moveRight,
                             ),
                             Container(
@@ -338,7 +362,7 @@ class _HomePageState extends State<LittleRootPage> {
                                   width: 50,
                                 ),
                                 MyButton(
-                                  text: 'return',
+                                  text: '⇇',
                                   function: pressedB,
                                 ),
                               ],
@@ -346,7 +370,7 @@ class _HomePageState extends State<LittleRootPage> {
                             Column(
                               children: [
                                 MyButton(
-                                  text: 'forward',
+                                  text: '⇉',
                                   function: pressedA,
                                 ),
                                 Container(
@@ -359,9 +383,23 @@ class _HomePageState extends State<LittleRootPage> {
                         ),
                       ],
                     ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '⇇ and ⇉ are the return and forward button for the dialogues',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                     Text(
                       'Created by JinHeng',
                       style: TextStyle(
+                        fontSize: 15,
                         color: Colors.white,
                       ),
                     ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Pokelab extends StatelessWidget {
-  double x = 0.0;
-  double y = 0.0;
+  double x;
+  double y;
   String currentMap = '';
 
   Pokelab({
