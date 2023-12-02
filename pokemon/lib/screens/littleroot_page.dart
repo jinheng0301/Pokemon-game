@@ -66,7 +66,7 @@ class _HomePageState extends State<LittleRootPage> {
         });
       }
     }
-    checkProfTalk();
+    // checkProfTalk();
     animateWalk();
   }
 
@@ -80,7 +80,7 @@ class _HomePageState extends State<LittleRootPage> {
         });
       }
     }
-    checkProfTalk();
+    // checkProfTalk();
     animateWalk();
   }
 
@@ -92,7 +92,7 @@ class _HomePageState extends State<LittleRootPage> {
           mapY += step;
           oakY = initialOakY + mapY;
         });
-        checkProfTalk();
+        // checkProfTalk();
       }
 
       // enter pokelab
@@ -120,7 +120,7 @@ class _HomePageState extends State<LittleRootPage> {
           mapY -= step;
           oakY = initialOakY + mapY;
         });
-        checkProfTalk();
+        // checkProfTalk();
       }
     }
     animateWalk();
@@ -169,58 +169,45 @@ class _HomePageState extends State<LittleRootPage> {
     return true;
   }
 
-  void profTalk() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Center(
-            child: Text(dialogues[currentDialogueIndex]),
-          ),
-          // actions: [
-          //   TextButton(
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //       setState(() {
-          //         chatStarted = false;
-          //       });
-          //     },
-          //     child: Text(
-          //       'ok',
-          //     ),
-          //   ),
-          // ],
-        );
-      },
-    );
-  }
+  // void profTalk() async {
+  //   await showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         content: Center(
+  //           child: Text(dialogues[currentDialogueIndex]),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-  void checkProfTalk() {
-    // Check if the boy is close to Professor Oak and initiate dialogue
-    if (currentLocation == 'littleroot') {
-      double boyX = mapX;
-      double boyY = mapY;
+  // void checkProfTalk() {
+  //   // Check if the boy is close to Professor Oak and initiate dialogue
+  //   if (currentLocation == 'littleroot') {
+  //     double boyX = mapX;
+  //     double boyY = mapY;
 
-      // Use the actual coordinates of Professor Oak
-      double oakDistance = ((oakX - boyX).abs() + (oakY - boyY).abs());
+  //     // Use the actual coordinates of Professor Oak
+  //     double oakDistance = ((oakX - boyX).abs() + (oakY - boyY).abs());
 
-      // Adjust the threshold based on your requirements
-      double dialogueThreshold = 0.2;
+  //     // Adjust the threshold based on your requirements
+  //     double dialogueThreshold = 0.2;
 
-      if (oakDistance < dialogueThreshold) {
-        if (!chatStarted) {
-          setState(() {
-            chatStarted = true;
-          });
-          profTalk();
-        }
-      } else {
-        setState(() {
-          chatStarted = false;
-        });
-      }
-    }
-  }
+  //     if (oakDistance < dialogueThreshold) {
+  //       if (!chatStarted) {
+  //         setState(() {
+  //           chatStarted = true;
+  //         });
+  //         profTalk();
+  //       }
+  //     } else {
+  //       setState(() {
+  //         chatStarted = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   void pressedA() {
     if (currentDialogueIndex < dialogues.length - 1) {
@@ -228,7 +215,7 @@ class _HomePageState extends State<LittleRootPage> {
         currentDialogueIndex++;
         chatStarted = true;
       });
-      profTalk();
+      // profTalk();
     }
   }
 
@@ -238,7 +225,7 @@ class _HomePageState extends State<LittleRootPage> {
         currentDialogueIndex--;
         chatStarted = true;
       });
-      profTalk();
+      // profTalk();
     }
   }
 

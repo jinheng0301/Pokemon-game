@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pokemon/characters/boy.dart';
 import 'package:pokemon/components/buttons.dart';
+import 'package:pokemon/lists/no_man_lands_lab.dart';
 import 'package:pokemon/maps/littleroot_town.dart';
 import 'package:pokemon/maps/pokelab.dart';
 import 'package:pokemon/screens/littleroot_page.dart';
@@ -38,9 +39,11 @@ class _PokelabPageState extends State<PokelabPage> {
     boyDirection = 'Left';
 
     if (currentLocation == 'pokelab') {
-      setState(() {
-        labMapX += step;
-      });
+      if (canMoveTo(boyDirection, noMansLandLab, mapX, mapY)) {
+        setState(() {
+          labMapX += step;
+        });
+      }
     }
 
     animateWalk();
@@ -50,9 +53,11 @@ class _PokelabPageState extends State<PokelabPage> {
     boyDirection = 'Right';
 
     if (currentLocation == 'pokelab') {
-      setState(() {
-        labMapX -= step;
-      });
+      if (canMoveTo(boyDirection, noMansLandLab, mapX, mapY)) {
+        setState(() {
+          labMapX -= step;
+        });
+      }
     }
 
     animateWalk();
@@ -62,9 +67,11 @@ class _PokelabPageState extends State<PokelabPage> {
     boyDirection = 'Up';
 
     if (currentLocation == 'pokelab') {
-      setState(() {
-        labMapY += step;
-      });
+      if (canMoveTo(boyDirection, noMansLandLab, mapX, mapY)) {
+        setState(() {
+          labMapY += step;
+        });
+      }
     }
 
     animateWalk();
@@ -74,9 +81,11 @@ class _PokelabPageState extends State<PokelabPage> {
     boyDirection = 'Down';
 
     if (currentLocation == 'pokelab') {
-      setState(() {
-        labMapY -= step;
-      });
+      if (canMoveTo(boyDirection, noMansLandLab, mapX, mapY)) {
+        setState(() {
+          labMapY -= step;
+        });
+      }
 
       // return to littleroot
       // if you are standing this door(this coordinate), it will change to pokelab
@@ -111,6 +120,37 @@ class _PokelabPageState extends State<PokelabPage> {
     });
   }
 
+  bool canMoveTo(String direction, var noMansLand, double x, double y) {
+    double stepX = 0.0;
+    double stepY = 0.0;
+
+    print('direction: $direction, x: $x, y: $y');
+    print('stepX: $stepX, stepY: $stepY');
+
+    if (direction == 'Left') {
+      stepX = step;
+      stepY = 0;
+    } else if (direction == 'Right') {
+      stepX = -step;
+      stepY = 0;
+    } else if (direction == 'Up') {
+      stepX = 0;
+      stepY = step;
+    } else if (direction == 'Down') {
+      stepX = 0;
+      stepY = -step;
+    }
+
+    for (int i = 0; i < noMansLand.length; i++) {
+      if ((noMansLandLab[i][0] - (x + stepX)).abs() < 0.01 &&
+          (noMansLandLab[i][1] - (y + stepY)).abs() < 0.01) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,11 +167,11 @@ class _PokelabPageState extends State<PokelabPage> {
                     x: labMapX,
                     y: labMapY,
                   ),
-                  // LittleRootTown(
-                  //   currentMap: currentLocation,
-                  //   x: mapX,
-                  //   y: mapY,
-                  // ),
+                  LittleRootTown(
+                    currentMap: currentLocation,
+                    x: mapX,
+                    y: mapY,
+                  ),
                   Container(
                     alignment: Alignment(0, 0),
                     child: MyBoy(
