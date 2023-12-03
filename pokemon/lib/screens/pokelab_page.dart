@@ -124,9 +124,6 @@ class _PokelabPageState extends State<PokelabPage> {
     double stepX = 0.0;
     double stepY = 0.0;
 
-    print('direction: $direction, x: $x, y: $y');
-    print('stepX: $stepX, stepY: $stepY');
-
     if (direction == 'Left') {
       stepX = step;
       stepY = 0;
@@ -142,8 +139,8 @@ class _PokelabPageState extends State<PokelabPage> {
     }
 
     for (int i = 0; i < noMansLand.length; i++) {
-      if ((noMansLandLab[i][0] - (x + stepX)).abs() < 0.01 &&
-          (noMansLandLab[i][1] - (y + stepY)).abs() < 0.01) {
+      if ((noMansLandLab[i][0] - (x + stepX)).abs() < 0.1 &&
+          (noMansLandLab[i][1] - (y + stepY)).abs() < 0.1) {
         return false;
       }
     }
