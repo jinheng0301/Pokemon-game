@@ -32,7 +32,12 @@ class _PokelabPageState extends State<PokelabPage> {
   String boyDirection = 'Up';
 
   void moveToLittleRoot() {
-    Navigator.pushNamed(context, LittleRootPage.id);
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => LittleRootPage(),
+      ),
+    );
   }
 
   void moveLeft() {

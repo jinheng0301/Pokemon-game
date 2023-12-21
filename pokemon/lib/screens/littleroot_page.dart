@@ -51,7 +51,12 @@ class _HomePageState extends State<LittleRootPage> {
   }
 
   void moveToPokelab() {
-    Navigator.pushNamed(context, PokelabPage.id);
+    Navigator.pushReplacement<void, void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) => PokelabPage(),
+    ),
+  );
   }
 
   void moveLeft() {
